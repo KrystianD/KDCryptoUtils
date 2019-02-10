@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using KDLib.Signing;
+﻿using System.Diagnostics.CodeAnalysis;
+using KDLib.HMAC;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -114,6 +113,35 @@ namespace KDLib.NET.Tests
       Assert.Equal("eyJhIjoxLCJiIjoyLCJjIjp7ImEiOjEsImQiOjV9fQ==.RHngY7sw47+PQ0P20W4+dNmPKV8=", signedString);
 
       Assert.Equal(s1.Sign(obj1), s1.Sign(obj2));
+    }
+
+    public class MyJsonObject
+    {
+      [JsonProperty("a")]
+      public int Val1;
+
+      [JsonProperty("b")]
+      public int Val2;
+    }
+
+    [Fact]
+    public void SignJsonObject()
+    {
+      var obj1 = new MyJsonObject() { Val1 = 1, Val2 = 2 };
+      var obj2 = new MyJsonObject() { Val1 = 1, Val2 = 2 };
+
+      var s1 = new JSONSigner("key1");
+
+      var signedString = s1.Sign(obj1);
+
+      Assert.Equal("eyJhIjoxLCJiIjoyfQ==./DNnEpUHsKFtddEVLfmig3cmLzE=", signedString);
+
+      Assert.Equal(s1.Sign(obj1), s1.Sign(obj2));
+
+      var decoded = s1.Decode<MyJsonObject>(signedString);
+
+      Assert.Equal(1, decoded.Val1);
+      Assert.Equal(2, decoded.Val2);
     }
   }
 }
