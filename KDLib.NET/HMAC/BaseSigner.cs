@@ -31,14 +31,14 @@ namespace KDLib.HMAC
     {
       T value;
       if (!DecodeInternal(signedString, out value))
-        throw new BadSignature();
+        throw new BadSignatureException();
       return value;
     }
 
     public void ValidateSignedString(string signedString)
     {
       if (!DecodeInternal(signedString, out _))
-        throw new BadSignature();
+        throw new BadSignatureException();
     }
 
     public void ValidateSignature(T value, string signatureBase64) => ValidateSignature(value, Convert.FromBase64String(signatureBase64));
@@ -46,7 +46,7 @@ namespace KDLib.HMAC
     public void ValidateSignature(T value, byte[] signatureBytes)
     {
       if (!IsSignatureValid(value, signatureBytes))
-        throw new BadSignature();
+        throw new BadSignatureException();
     }
 
     public bool IsSignedStringValid(string signedString)

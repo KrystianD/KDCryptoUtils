@@ -12,11 +12,10 @@ namespace KDLib.NET.Tests
     [Fact]
     public void SignBytes()
     {
-      Signer s1, s2;
       string signed;
       byte[] decoded;
 
-      s1 = new Signer("key1");
+      var s1 = new Signer("key1");
 
       signed = s1.Sign(new byte[] { 1, 2, 3 });
       Assert.Equal("AQID.1DmDykkgnOXtgssgfJYjDF7ANKk=", signed);
@@ -39,8 +38,8 @@ namespace KDLib.NET.Tests
       signed = signed.Replace("D", "E");
 
       Assert.False(s1.IsSignedStringValid(signed));
-      Assert.Throws<BadSignature>(() => s1.ValidateSignedString(signed));
-      Assert.Throws<BadSignature>(() => s1.Decode(signed));
+      Assert.Throws<BadSignatureException>(() => s1.ValidateSignedString(signed));
+      Assert.Throws<BadSignatureException>(() => s1.Decode(signed));
     }
 
 
@@ -65,7 +64,7 @@ namespace KDLib.NET.Tests
       signature = signature.Replace("D", "E");
 
       Assert.False(s1.IsSignatureValid(data, signature));
-      Assert.Throws<BadSignature>(() => s1.ValidateSignature(data, signature));
+      Assert.Throws<BadSignatureException>(() => s1.ValidateSignature(data, signature));
     }
 
     [Fact]
