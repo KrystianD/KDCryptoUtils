@@ -59,21 +59,10 @@ namespace KDLib.HMAC
     public bool IsSignatureValid(T value, byte[] signatureBytes)
     {
       var desiredBytes = Hmac.ComputeHash(ConvertToBytes(value));
-      return ConstantTimeAreEqual(desiredBytes, signatureBytes);
+      return CryptoUtils.ConstantTimeAreEqual(desiredBytes, signatureBytes);
     }
 
     // Helpers
-    private static bool ConstantTimeAreEqual(byte[] a, byte[] b)
-    {
-      if (a.Length != b.Length)
-        return false;
-
-      int cmp = 0;
-      for (int i = 0; i < a.Length; i++)
-        cmp |= a[i] ^ b[i];
-      return cmp == 0;
-    }
-
     private bool DecodeInternal(string signedString, out T value)
     {
       var parts = signedString.Split(new[] { '.' }, 2);
