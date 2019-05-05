@@ -50,5 +50,11 @@ namespace KDLib.NET.Tests
 
       Assert.False(PasswordHasher.CheckPassword(hashedPassword, TestPass, salt: salt));
     }
+
+    [Fact]
+    public void TestError()
+    {
+      Assert.False(HashedPassword.TryDeserialize("a.b", out _));
+    }
   }
 }
