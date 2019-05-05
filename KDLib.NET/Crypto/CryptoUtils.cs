@@ -1,6 +1,6 @@
-namespace KDLib
+namespace KDLib.Crypto
 {
-  public class CryptoUtils
+  public static class CryptoUtils
   {
     public static bool ConstantTimeAreEqual(byte[] a, byte[] b)
     {

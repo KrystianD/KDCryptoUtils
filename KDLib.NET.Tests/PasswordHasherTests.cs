@@ -1,3 +1,4 @@
+using KDLib.Crypto;
 using Xunit;
 
 namespace KDLib.NET.Tests
