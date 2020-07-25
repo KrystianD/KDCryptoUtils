@@ -5,7 +5,7 @@ namespace KDLib.NET.Tests
 {
   public class PasswordHasherTests
   {
-    const string TestPass = "test1";
+    private const string TestPass = "test1";
 
     [Fact]
     public void TestDefault()
@@ -28,8 +28,9 @@ namespace KDLib.NET.Tests
 
       var hashStr = hashedPassword.SerializeToString();
 
-      // ReSharper disable once StringLiteralTypo
+      // ReSharper disable StringLiteralTypo
       Assert.Equal("$1$10000$AQIDBAUGBwg=$u/MBH7KaW65sEUfOyscUeQwpmaAEIGWpLv05GX4iqOg=", hashStr);
+      // ReSharper restore StringLiteralTypo
 
       Assert.True(HashedPassword.TryDeserialize(hashStr, out var hashedPasswordParsed));
       Assert.Equal(32, hashedPasswordParsed.Digest.Length);

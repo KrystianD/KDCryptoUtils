@@ -18,7 +18,7 @@ namespace KDLib.Crypto
     public string SerializeToString()
     {
       // ReSharper disable once UseStringInterpolation
-      return string.Format("${0}${1}${2}${3}", (int) HashType, Iterations, Convert.ToBase64String(Salt), Convert.ToBase64String(Digest));
+      return string.Format("${0}${1}${2}${3}", (int)HashType, Iterations, Convert.ToBase64String(Salt), Convert.ToBase64String(Digest));
     }
 
     public static bool TryDeserialize(string serialized, out HashedPassword hashedPassword)
@@ -32,10 +32,19 @@ namespace KDLib.Crypto
           !int.TryParse(parts[2], out hashedPassword.Iterations))
         return false;
 
-      hashedPassword.HashType = (HashTypeEnum) hashTypeInt;
+      hashedPassword.HashType = (HashTypeEnum)hashTypeInt;
       hashedPassword.Salt = Convert.FromBase64String(parts[3]);
       hashedPassword.Digest = Convert.FromBase64String(parts[4]);
       return true;
+    }
+
+    public bool CheckPassword(string password)
+    {
+      using (var derived = new Rfc2898DeriveBytes(password, Salt, Iterations)) {
+        var digest = derived.GetBytes(Digest.Length);
+
+        return CryptoUtils.ConstantTimeAreEqual(digest, Digest);
+      }
     }
   }
 
@@ -53,13 +62,6 @@ namespace KDLib.Crypto
       }
     }
 
-    public static bool CheckPassword(HashedPassword hashedPassword, string password)
-    {
-      using (var derived = new Rfc2898DeriveBytes(password, hashedPassword.Salt, hashedPassword.Iterations)) {
-        var digest = derived.GetBytes(hashedPassword.Digest.Length);
-
-        return CryptoUtils.ConstantTimeAreEqual(digest, hashedPassword.Digest);
-      }
-    }
+    public static bool CheckPassword(HashedPassword hashedPassword, string password) => hashedPassword.CheckPassword(password);
   }
 }
