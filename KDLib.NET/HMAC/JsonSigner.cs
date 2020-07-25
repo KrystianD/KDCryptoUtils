@@ -4,9 +4,9 @@ using Newtonsoft.Json.Linq;
 
 namespace KDLib.HMAC
 {
-  public class JSONSigner : BaseSigner<object>
+  public class JsonSigner : BaseSigner<object>
   {
-    public JSONSigner(string secretKey) : base(secretKey)
+    public JsonSigner(string secretKey) : base(secretKey)
     {
     }
 

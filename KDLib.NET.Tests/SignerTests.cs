@@ -105,7 +105,7 @@ namespace KDLib.NET.Tests
     [Fact]
     public void SignJson()
     {
-      var s1 = new JSONSigner("key1");
+      var s1 = new JsonSigner("key1");
 
       var obj1 = JToken.FromObject(new {
           a = 1,
@@ -151,7 +151,7 @@ namespace KDLib.NET.Tests
       var obj1 = new MyJsonObject() { Val1 = 1, Val2 = 2 };
       var obj2 = new MyJsonObject() { Val1 = 1, Val2 = 2 };
 
-      var s1 = new JSONSigner("key1");
+      var s1 = new JsonSigner("key1");
 
       var signedString = s1.Sign(obj1);
 
