@@ -30,15 +30,15 @@ namespace KDLib.HMAC
 
     public T Decode(string signedString)
     {
-      T value;
-      if (!DecodeInternal(signedString, out value))
+      if (!ValidateInternal(signedString, out var valueBytes))
         throw new BadSignatureException();
-      return value;
+
+      return ConvertFromBytes(valueBytes);
     }
 
     public void ValidateSignedString(string signedString)
     {
-      if (!DecodeInternal(signedString, out _))
+      if (!IsSignedStringValid(signedString))
         throw new BadSignatureException();
     }
 
@@ -52,30 +52,32 @@ namespace KDLib.HMAC
 
     public bool IsSignedStringValid(string signedString)
     {
-      return DecodeInternal(signedString, out _);
+      return ValidateInternal(signedString, out _);
     }
 
-    public bool IsSignatureValid(T value, string signatureBase64) => IsSignatureValid(value, Convert.FromBase64String(signatureBase64));
+    public bool IsSignatureValid(T value, string signatureBase64) => IsSignatureValid(ConvertToBytes(value), Convert.FromBase64String(signatureBase64));
 
-    public bool IsSignatureValid(T value, byte[] signatureBytes)
+    public bool IsSignatureValid(T value, byte[] signatureBytes) => IsSignatureValid(ConvertToBytes(value), signatureBytes);
+
+    private bool IsSignatureValid(byte[] data, byte[] signatureBytes)
     {
-      var desiredBytes = Hmac.ComputeHash(ConvertToBytes(value));
+      var desiredBytes = Hmac.ComputeHash(data);
       return CryptoUtils.ConstantTimeAreEqual(desiredBytes, signatureBytes);
     }
 
     // Helpers
-    private bool DecodeInternal(string signedString, out T value)
+    private bool ValidateInternal(string signedString, out byte[] valueBytes)
     {
       var parts = signedString.Split(new[] { '.' }, 2);
       if (parts.Length != 2) {
-        value = default;
+        valueBytes = default;
         return false;
       }
       else {
         string valueB64 = parts[0];
-        string signature = parts[1];
-        value = ConvertFromBytes(Convert.FromBase64String(valueB64));
-        return IsSignatureValid(value, signature);
+        string signatureB64 = parts[1];
+        valueBytes = Convert.FromBase64String(valueB64);
+        return IsSignatureValid(valueBytes, Convert.FromBase64String(signatureB64));
       }
     }
 

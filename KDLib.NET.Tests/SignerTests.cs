@@ -42,7 +42,6 @@ namespace KDLib.NET.Tests
       Assert.Throws<BadSignatureException>(() => s1.Decode(signed));
     }
 
-
     [Fact]
     public void Signature()
     {
@@ -52,6 +51,7 @@ namespace KDLib.NET.Tests
       var signature = s1.GetSignatureString(data);
 
       Assert.True(s1.IsSignatureValid(data, signature));
+      Assert.Null(Record.Exception(() => s1.ValidateSignature(data, signature)));
     }
 
     [Fact]
@@ -65,6 +65,28 @@ namespace KDLib.NET.Tests
 
       Assert.False(s1.IsSignatureValid(data, signature));
       Assert.Throws<BadSignatureException>(() => s1.ValidateSignature(data, signature));
+    }
+
+    [Fact]
+    public void SignedString()
+    {
+      var s1 = new Signer("key1");
+
+      var signedString = "AQIE.hMzmM4WyYiVOV2JtCBNmbxT0LPs=";
+
+      Assert.Null(Record.Exception(() => s1.ValidateSignedString(signedString)));
+    }
+
+    [Fact]
+    public void SignedStringInvalid()
+    {
+      var s1 = new Signer("key1");
+
+      var signedString = "AQIE.hMzmM4WyYiVOV2JtCBNmbxT0LPs=";
+
+      signedString = signedString.Replace(".", "_");
+
+      Assert.False(s1.IsSignedStringValid(signedString));
     }
 
     [Fact]
@@ -105,7 +127,7 @@ namespace KDLib.NET.Tests
           a = 1,
       });
 
-      Assert.Equal(@"{""a"":1,""b"":2,""c"":{""d"":5,""a"":1}}", obj1.ToString(Formatting.None));
+      Assert.Equal(@"{""c"":{""d"":5,""a"":1},""b"":2,""a"":1}", obj2.ToString(Formatting.None));
 
       var signedString = s1.Sign(obj1);
 
