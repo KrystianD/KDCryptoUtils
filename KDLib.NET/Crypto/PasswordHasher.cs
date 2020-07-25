@@ -53,9 +53,9 @@ namespace KDLib.Crypto
       }
     }
 
-    public static bool CheckPassword(HashedPassword hashedPassword, string password, byte[] salt = null)
+    public static bool CheckPassword(HashedPassword hashedPassword, string password)
     {
-      using (var derived = new Rfc2898DeriveBytes(password, salt ?? hashedPassword.Salt, hashedPassword.Iterations)) {
+      using (var derived = new Rfc2898DeriveBytes(password, hashedPassword.Salt, hashedPassword.Iterations)) {
         var digest = derived.GetBytes(hashedPassword.Digest.Length);
 
         return CryptoUtils.ConstantTimeAreEqual(digest, hashedPassword.Digest);

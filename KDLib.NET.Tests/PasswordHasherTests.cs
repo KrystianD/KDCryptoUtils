@@ -21,7 +21,7 @@ namespace KDLib.NET.Tests
 
       var hashedPassword = PasswordHasher.HashPassword(TestPass, iterations: 10000, hashSize: 32, salt: salt);
 
-      Assert.True(PasswordHasher.CheckPassword(hashedPassword, TestPass, salt: salt));
+      Assert.True(PasswordHasher.CheckPassword(hashedPassword, TestPass));
       Assert.Equal(32, hashedPassword.Digest.Length);
       Assert.Equal(8, hashedPassword.Salt.Length);
       Assert.Equal(10000, hashedPassword.Iterations);
@@ -44,11 +44,11 @@ namespace KDLib.NET.Tests
 
       var hashedPassword = PasswordHasher.HashPassword(TestPass, salt: salt);
 
-      Assert.True(PasswordHasher.CheckPassword(hashedPassword, TestPass, salt: salt));
+      Assert.True(PasswordHasher.CheckPassword(hashedPassword, TestPass));
 
       hashedPassword.Digest[0] += 1;
 
-      Assert.False(PasswordHasher.CheckPassword(hashedPassword, TestPass, salt: salt));
+      Assert.False(PasswordHasher.CheckPassword(hashedPassword, TestPass));
     }
 
     [Fact]
