@@ -68,16 +68,26 @@ namespace KDLib.HMAC
     // Helpers
     private bool ValidateInternal(string signedString, out byte[] valueBytes)
     {
+      if (!TryParseSignedString(signedString, out valueBytes, out var signatureBytes))
+        return false;
+
+      return IsSignatureValid(valueBytes, signatureBytes);
+    }
+
+    private static bool TryParseSignedString(string signedString, out byte[] valueBytes, out byte[] signatureBytes)
+    {
       var parts = signedString.Split(new[] { '.' }, 2);
       if (parts.Length != 2) {
         valueBytes = default;
+        signatureBytes = default;
         return false;
       }
       else {
         string valueB64 = parts[0];
         string signatureB64 = parts[1];
         valueBytes = Convert.FromBase64String(valueB64);
-        return IsSignatureValid(valueBytes, Convert.FromBase64String(signatureB64));
+        signatureBytes = Convert.FromBase64String(signatureB64);
+        return true;
       }
     }
 
