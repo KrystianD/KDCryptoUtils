@@ -15,7 +15,7 @@ namespace KDLib.NET.Tests
       string signed;
       byte[] decoded;
 
-      var s1 = new Signer("key1");
+      var s1 = new ByteSigner("key1");
 
       signed = s1.Sign(new byte[] { 1, 2, 3 });
       Assert.Equal("AQID.1DmDykkgnOXtgssgfJYjDF7ANKk=", signed);
@@ -32,7 +32,7 @@ namespace KDLib.NET.Tests
     [Fact]
     public void SignBytesInvalid()
     {
-      var s1 = new Signer("key1");
+      var s1 = new ByteSigner("key1");
 
       var signed = s1.Sign(new byte[] { 1, 2, 3 });
       signed = signed.Replace("D", "E");
@@ -45,7 +45,7 @@ namespace KDLib.NET.Tests
     [Fact]
     public void Signature()
     {
-      var s1 = new Signer("key1");
+      var s1 = new ByteSigner("key1");
 
       var data = new byte[] { 1, 2, 3 };
       var signature = s1.GetSignatureString(data);
@@ -57,7 +57,7 @@ namespace KDLib.NET.Tests
     [Fact]
     public void SignatureInvalid()
     {
-      var s1 = new Signer("key1");
+      var s1 = new ByteSigner("key1");
 
       var data = new byte[] { 1, 2, 3 };
       var signature = s1.GetSignatureString(data);
@@ -70,7 +70,7 @@ namespace KDLib.NET.Tests
     [Fact]
     public void SignedString()
     {
-      var s1 = new Signer("key1");
+      var s1 = new ByteSigner("key1");
 
       var signedString = "AQIE.hMzmM4WyYiVOV2JtCBNmbxT0LPs=";
 
@@ -80,7 +80,7 @@ namespace KDLib.NET.Tests
     [Fact]
     public void SignedStringInvalid()
     {
-      var s1 = new Signer("key1");
+      var s1 = new ByteSigner("key1");
 
       var signedString = "AQIE.hMzmM4WyYiVOV2JtCBNmbxT0LPs=";
 

@@ -1,10 +1,8 @@
 namespace KDLib.HMAC
 {
-  public class Signer : BaseSigner<byte[]>
+  public class ByteSigner : BaseSigner<byte[]>
   {
-    public Signer(string secretKey) : base(secretKey)
-    {
-    }
+    public ByteSigner(string secretKey) : base(secretKey) { }
 
     protected override byte[] ConvertToBytes(byte[] value)
     {
