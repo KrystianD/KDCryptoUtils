@@ -70,6 +70,18 @@ namespace KDCryptoUtils.HMAC
       if (!IsSignatureValid(value, signatureBytes))
         throw new BadSignatureException();
     }
+    
+    public void ValidateSignature(T value, byte[] signatureBuffer, int signatureOffset, int signatureLength)
+    {
+      if (!IsSignatureValid(value, signatureBuffer, signatureOffset, signatureLength))
+        throw new BadSignatureException();
+    }
+
+    protected void ValidateSignature(byte[] valueBuffer, int valueOffset, int valueLength, byte[] signatureBuffer, int signatureOffset, int signatureLength)
+    {
+      if (!IsSignatureValid(valueBuffer, valueOffset, valueLength, signatureBuffer, signatureOffset, signatureLength))
+        throw new BadSignatureException();
+    }
 
     public bool IsSignedStringValid(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
@@ -80,10 +92,21 @@ namespace KDCryptoUtils.HMAC
 
     public bool IsSignatureValid(T value, byte[] signatureBytes) => IsSignatureValid(ConvertToBytes(value), signatureBytes);
 
+    public bool IsSignatureValid(T value, byte[] signatureBuffer, int signatureOffset, int signatureLength)
+    {
+      var valueBytes = ConvertToBytes(value);
+      return IsSignatureValid(valueBytes, 0, valueBytes.Length, signatureBuffer, signatureOffset, signatureLength);
+    }
+
     private bool IsSignatureValid(byte[] valueBuffer, byte[] signatureBytes)
     {
-      var desiredBytes = GetSignatureBytes(valueBuffer, 0, valueBuffer.Length);
-      return CryptoUtils.ConstantTimeAreEqual(desiredBytes, signatureBytes);
+      return IsSignatureValid(valueBuffer, 0, valueBuffer.Length, signatureBytes, 0, signatureBytes.Length);
+    }
+
+    protected bool IsSignatureValid(byte[] valueBuffer, int valueOffset, int valueLength, byte[] signatureBuffer, int signatureOffset, int signatureLength)
+    {
+      var desiredBytes = GetSignatureBytes(valueBuffer, valueOffset, valueLength);
+      return CryptoUtils.ConstantTimeAreEqual(desiredBytes, 0, desiredBytes.Length, signatureBuffer, signatureOffset, signatureLength);
     }
 
     // Helpers
