@@ -1,9 +1,9 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using KDLib.Crypto;
+using KDCryptoUtils.Crypto;
 
-namespace KDLib.HMAC
+namespace KDCryptoUtils.HMAC
 {
   public abstract class BaseSigner<T>
   {

@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDLib.NET", "KDLib.NET\KDLib.NET.csproj", "{F1133D07-954A-4C95-B130-38561ED4AE8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDCryptoUtils", "KDCryptoUtils\KDCryptoUtils.csproj", "{F1133D07-954A-4C95-B130-38561ED4AE8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDLib.NET.Tests", "KDLib.NET.Tests\KDLib.NET.Tests.csproj", "{A3FD4B73-6876-47F8-9034-C7A24377AB21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDCryptoUtils.Tests", "KDCryptoUtils.Tests\KDCryptoUtils.Tests.csproj", "{A3FD4B73-6876-47F8-9034-C7A24377AB21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

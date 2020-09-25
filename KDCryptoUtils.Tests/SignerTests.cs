@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using KDLib.HMAC;
+using KDCryptoUtils.HMAC;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace KDLib.NET.Tests
+namespace KDCryptoUtils.Tests
 {
   [SuppressMessage("ReSharper", "StringLiteralTypo")]
   public class SignerTests

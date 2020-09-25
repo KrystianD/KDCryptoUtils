@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace KDLib.HMAC
+namespace KDCryptoUtils.HMAC
 {
   public class StringSigner : BaseSigner<string>
   {

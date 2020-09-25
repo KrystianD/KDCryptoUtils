@@ -1,4 +1,4 @@
-namespace KDLib.HMAC
+namespace KDCryptoUtils.HMAC
 {
   public class ByteSigner : BaseSigner<byte[]>
   {

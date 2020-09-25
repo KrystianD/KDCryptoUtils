@@ -1,7 +1,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace KDLib.Crypto
+namespace KDCryptoUtils.Crypto
 {
   public class HashedPassword
   {

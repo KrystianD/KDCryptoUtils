@@ -1,4 +1,4 @@
-namespace KDLib.Crypto
+namespace KDCryptoUtils.Crypto
 {
   public static class CryptoUtils
   {

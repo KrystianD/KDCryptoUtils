@@ -1,7 +1,7 @@
-using KDLib.Crypto;
+using KDCryptoUtils.Crypto;
 using Xunit;
 
-namespace KDLib.NET.Tests
+namespace KDCryptoUtils.Tests
 {
   public class PasswordHasherTests
   {
