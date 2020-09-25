@@ -4,9 +4,7 @@ namespace KDCryptoUtils.HMAC
 {
   public class StringSigner : BaseSigner<string>
   {
-    public StringSigner(string secretKey) : base(secretKey)
-    {
-    }
+    public StringSigner(string secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
 
     protected override byte[] ConvertToBytes(string value)
     {

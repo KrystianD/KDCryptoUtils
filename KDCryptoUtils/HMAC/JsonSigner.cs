@@ -7,9 +7,7 @@ namespace KDCryptoUtils.HMAC
 {
   public class JsonSigner : BaseSigner<object>
   {
-    public JsonSigner(string secretKey) : base(secretKey)
-    {
-    }
+    public JsonSigner(string secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
 
     protected override byte[] ConvertToBytes(object value)
     {
@@ -26,7 +24,7 @@ namespace KDCryptoUtils.HMAC
 
     public T Decode<T>(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      var rawValue = (JToken) Decode(signedString, encoding);
+      var rawValue = (JToken)Decode(signedString, encoding);
       return rawValue.ToObject<T>();
     }
   }

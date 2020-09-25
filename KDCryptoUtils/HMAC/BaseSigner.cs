@@ -8,25 +8,45 @@ namespace KDCryptoUtils.HMAC
 {
   public abstract class BaseSigner<T>
   {
+    private int _signatureLength;
+
     private HMACSHA1 Hmac { get; }
     private byte[] SecretKey { get; }
 
-    public BaseSigner(string secretKey)
+    public BaseSigner(string secretKey, int signatureLength = -1)
     {
+      _signatureLength = signatureLength;
+
       SecretKey = Encoding.ASCII.GetBytes(secretKey);
       Hmac = new HMACSHA1(SecretKey);
     }
 
     public string GetSignatureString(T value) => Convert.ToBase64String(GetSignatureBytes(value));
 
-    public byte[] GetSignatureBytes(T value) => Hmac.ComputeHash(ConvertToBytes(value));
+    public byte[] GetSignatureBytes(T value)
+    {
+      byte[] valueBytes = ConvertToBytes(value);
+      return GetSignatureBytes(valueBytes, 0, valueBytes.Length);
+    }
 
-    public byte[] GetSignatureBytes(byte[] buffer, int offset, int count) => Hmac.ComputeHash(buffer, offset, count);
+    public byte[] GetSignatureBytes(byte[] buffer, int offset, int count)
+    {
+      var signatureBytes = Hmac.ComputeHash(buffer, offset, count);
+      if (_signatureLength == -1) {
+        return signatureBytes;
+      }
+      else {
+        var bytesSlice = new byte[_signatureLength];
+        Array.Copy(signatureBytes, bytesSlice, _signatureLength);
+        return bytesSlice;
+      }
+    }
 
     public string Sign(T value, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      byte[] data = ConvertToBytes(value);
-      return CreateSignedString(data, Hmac.ComputeHash(data), encoding);
+      byte[] valueBytes = ConvertToBytes(value);
+      var signatureBytes = GetSignatureBytes(valueBytes, 0, valueBytes.Length);
+      return CreateSignedString(valueBytes, signatureBytes, encoding);
     }
 
     public T Decode(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
@@ -60,9 +80,9 @@ namespace KDCryptoUtils.HMAC
 
     public bool IsSignatureValid(T value, byte[] signatureBytes) => IsSignatureValid(ConvertToBytes(value), signatureBytes);
 
-    private bool IsSignatureValid(byte[] data, byte[] signatureBytes)
+    private bool IsSignatureValid(byte[] valueBuffer, byte[] signatureBytes)
     {
-      var desiredBytes = Hmac.ComputeHash(data);
+      var desiredBytes = GetSignatureBytes(valueBuffer, 0, valueBuffer.Length);
       return CryptoUtils.ConstantTimeAreEqual(desiredBytes, signatureBytes);
     }
 
