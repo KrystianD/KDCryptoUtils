@@ -21,6 +21,8 @@ namespace KDCryptoUtils.HMAC
 
     public byte[] GetSignatureBytes(T value) => Hmac.ComputeHash(ConvertToBytes(value));
 
+    public byte[] GetSignatureBytes(byte[] buffer, int offset, int count) => Hmac.ComputeHash(buffer, offset, count);
+
     public string Sign(T value, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
       byte[] data = ConvertToBytes(value);
