@@ -20,25 +20,23 @@ namespace KDLib.HMAC
 
     public byte[] GetSignatureBytes(T value) => Hmac.ComputeHash(ConvertToBytes(value));
 
-    public string Sign(T value)
+    public string Sign(T value, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
       byte[] data = ConvertToBytes(value);
-      string valueB64 = Convert.ToBase64String(data);
-      string signatureB64 = Convert.ToBase64String(Hmac.ComputeHash(data));
-      return $"{valueB64}.{signatureB64}";
+      return CreateSignedString(data, Hmac.ComputeHash(data), encoding);
     }
 
-    public T Decode(string signedString)
+    public T Decode(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      if (!ValidateInternal(signedString, out var valueBytes))
+      if (!ValidateInternal(signedString, encoding, out var valueBytes))
         throw new BadSignatureException();
 
       return ConvertFromBytes(valueBytes);
     }
 
-    public void ValidateSignedString(string signedString)
+    public void ValidateSignedString(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      if (!IsSignedStringValid(signedString))
+      if (!IsSignedStringValid(signedString, encoding))
         throw new BadSignatureException();
     }
 
@@ -50,9 +48,9 @@ namespace KDLib.HMAC
         throw new BadSignatureException();
     }
 
-    public bool IsSignedStringValid(string signedString)
+    public bool IsSignedStringValid(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      return ValidateInternal(signedString, out _);
+      return ValidateInternal(signedString, encoding, out _);
     }
 
     public bool IsSignatureValid(T value, string signatureBase64) => IsSignatureValid(ConvertToBytes(value), Convert.FromBase64String(signatureBase64));
@@ -66,15 +64,22 @@ namespace KDLib.HMAC
     }
 
     // Helpers
-    private bool ValidateInternal(string signedString, out byte[] valueBytes)
+    private bool ValidateInternal(string signedString, BinaryEncoding encoding, out byte[] valueBytes)
     {
-      if (!TryParseSignedString(signedString, out valueBytes, out var signatureBytes))
+      if (!TryParseSignedString(signedString, encoding, out valueBytes, out var signatureBytes))
         return false;
 
       return IsSignatureValid(valueBytes, signatureBytes);
     }
 
-    private static bool TryParseSignedString(string signedString, out byte[] valueBytes, out byte[] signatureBytes)
+    private static string CreateSignedString(byte[] valueBytes, byte[] signatureBytes, BinaryEncoding encoding)
+    {
+      string valueB64 = BinaryEncoder.Encode(valueBytes, encoding);
+      string signatureB64 = BinaryEncoder.Encode(signatureBytes, encoding);
+      return $"{valueB64}.{signatureB64}";
+    }
+
+    private static bool TryParseSignedString(string signedString, BinaryEncoding encoding, out byte[] valueBytes, out byte[] signatureBytes)
     {
       var parts = signedString.Split(new[] { '.' }, 2);
       if (parts.Length != 2) {
@@ -85,8 +90,8 @@ namespace KDLib.HMAC
       else {
         string valueB64 = parts[0];
         string signatureB64 = parts[1];
-        valueBytes = Convert.FromBase64String(valueB64);
-        signatureBytes = Convert.FromBase64String(signatureB64);
+        valueBytes = BinaryEncoder.Decode(valueB64, encoding);
+        signatureBytes = BinaryEncoder.Decode(signatureB64, encoding);
         return true;
       }
     }

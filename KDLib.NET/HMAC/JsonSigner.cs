@@ -23,9 +23,9 @@ namespace KDLib.HMAC
       return JToken.Parse(Encoding.UTF8.GetString(data));
     }
 
-    public T Decode<T>(string signedString)
+    public T Decode<T>(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      var rawValue = (JToken) Decode(signedString);
+      var rawValue = (JToken) Decode(signedString, encoding);
       return rawValue.ToObject<T>();
     }
   }
