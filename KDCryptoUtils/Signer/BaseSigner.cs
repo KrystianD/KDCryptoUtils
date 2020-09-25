@@ -1,7 +1,6 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using KDCryptoUtils.Crypto;
 using KDLib;
 
 namespace KDCryptoUtils.HMAC

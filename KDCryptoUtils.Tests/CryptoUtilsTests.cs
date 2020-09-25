@@ -1,4 +1,3 @@
-using KDCryptoUtils.Crypto;
 using Xunit;
 
 namespace KDCryptoUtils.Tests
