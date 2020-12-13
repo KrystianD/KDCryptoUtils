@@ -13,7 +13,7 @@ namespace KDCryptoUtils.Signer
     private byte[] SecretKey { get; }
 
     public BaseSigner(string secretKey, int signatureLength = -1)
-        : this(Encoding.ASCII.GetBytes(secretKey), signatureLength) { }
+        : this(Encoding.UTF8.GetBytes(secretKey), signatureLength) { }
 
     public BaseSigner(byte[] secretKey, int signatureLength = -1)
     {
