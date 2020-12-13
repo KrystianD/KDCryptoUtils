@@ -20,7 +20,7 @@ namespace KDCryptoUtils.Signer
       Hmac = new HMACSHA1(SecretKey);
     }
 
-    public byte[] GetSignatureBytes(byte[] buffer, int offset, int count)
+    protected byte[] GetSignatureBytes(byte[] buffer, int offset, int count)
     {
       var signatureBytes = Hmac.ComputeHash(buffer, offset, count);
       if (_signatureLength == -1) {

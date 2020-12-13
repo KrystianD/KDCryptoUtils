@@ -14,6 +14,11 @@ namespace KDCryptoUtils.Signer
       return data;
     }
 
+    public new byte[] GetSignatureBytes(byte[] buffer, int offset, int count)
+    {
+      return base.GetSignatureBytes(buffer, offset, count);
+    }
+
     public new void ValidateSignature(byte[] valueBuffer, int valueOffset, int valueLength, byte[] signatureBuffer, int signatureOffset, int signatureLength)
     {
       base.ValidateSignature(valueBuffer, valueOffset, valueLength, signatureBuffer, signatureOffset, signatureLength);
