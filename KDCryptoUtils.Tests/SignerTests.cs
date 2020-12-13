@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using KDCryptoUtils.HMAC;
+using KDCryptoUtils.Signer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;

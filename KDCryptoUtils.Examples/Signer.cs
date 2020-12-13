@@ -1,5 +1,5 @@
 using System;
-using KDCryptoUtils.HMAC;
+using KDCryptoUtils.Signer;
 using Newtonsoft.Json.Linq;
 
 namespace KDCryptoUtils.Examples

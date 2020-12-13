@@ -3,7 +3,7 @@ using KDLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace KDCryptoUtils.HMAC
+namespace KDCryptoUtils.Signer
 {
   public class JsonSigner : BaseSigner<object>
   {

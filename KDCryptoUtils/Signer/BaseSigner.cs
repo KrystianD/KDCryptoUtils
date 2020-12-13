@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using KDLib;
 
-namespace KDCryptoUtils.HMAC
+namespace KDCryptoUtils.Signer
 {
   public abstract class BaseSigner<T>
   {

@@ -1,6 +1,6 @@
 using System;
 
-namespace KDCryptoUtils.HMAC
+namespace KDCryptoUtils.Signer
 {
   public class BadSignatureException : Exception
   {
