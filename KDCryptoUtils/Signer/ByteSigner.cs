@@ -3,6 +3,7 @@ namespace KDCryptoUtils.Signer
   public class ByteSigner : BaseSigner<byte[]>
   {
     public ByteSigner(string secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
+    public ByteSigner(byte[] secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
 
     protected override byte[] ConvertToBytes(byte[] value)
     {

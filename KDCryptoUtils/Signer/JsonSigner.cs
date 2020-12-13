@@ -8,6 +8,7 @@ namespace KDCryptoUtils.Signer
   public class JsonSigner : BaseSigner<object>
   {
     public JsonSigner(string secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
+    public JsonSigner(byte[] secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
 
     protected override byte[] ConvertToBytes(object value)
     {

@@ -5,6 +5,7 @@ namespace KDCryptoUtils.Signer
   public class StringSigner : BaseSigner<string>
   {
     public StringSigner(string secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
+    public StringSigner(byte[] secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
 
     protected override byte[] ConvertToBytes(string value)
     {

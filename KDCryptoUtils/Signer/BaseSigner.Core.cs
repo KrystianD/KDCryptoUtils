@@ -7,17 +7,20 @@ namespace KDCryptoUtils.Signer
 {
   public abstract partial class BaseSigner<T>
   {
-    private int _signatureLength;
+    private readonly int _signatureLength;
 
     private HMACSHA1 Hmac { get; }
     private byte[] SecretKey { get; }
 
     public BaseSigner(string secretKey, int signatureLength = -1)
+        : this(Encoding.ASCII.GetBytes(secretKey), signatureLength) { }
+
+    public BaseSigner(byte[] secretKey, int signatureLength = -1)
     {
       _signatureLength = signatureLength;
 
-      SecretKey = Encoding.ASCII.GetBytes(secretKey);
-      Hmac = new HMACSHA1(SecretKey);
+      SecretKey = secretKey;
+      Hmac = new HMACSHA1(secretKey);
     }
 
     protected byte[] GetSignatureBytes(byte[] buffer, int offset, int count)
@@ -45,7 +48,7 @@ namespace KDCryptoUtils.Signer
       var signatureBytes = GetSignatureBytes(valueBytes, 0, valueBytes.Length);
       return CreateSignedString(valueBytes, signatureBytes, encoding);
     }
-  
+
     public T Decode(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
       if (!ValidateInternal(signedString, encoding, out var valueBytes))
