@@ -9,18 +9,24 @@ namespace KDCryptoUtils.Signer
   {
     private readonly int _signatureLength;
 
-    private HMACSHA1 Hmac { get; }
+    private HMAC Hmac { get; }
     private byte[] SecretKey { get; }
 
-    public BaseSigner(string secretKey, int signatureLength = -1)
-        : this(Encoding.UTF8.GetBytes(secretKey), signatureLength) { }
+    public BaseSigner(string secretKey, int signatureLength = -1, HashAlgorithm hashAlgorithm = HashAlgorithm.Sha1)
+        : this(Encoding.UTF8.GetBytes(secretKey), signatureLength, hashAlgorithm) { }
 
-    public BaseSigner(byte[] secretKey, int signatureLength = -1)
+    public BaseSigner(byte[] secretKey, int signatureLength = -1, HashAlgorithm hashAlgorithm = HashAlgorithm.Sha1)
     {
       _signatureLength = signatureLength;
 
       SecretKey = secretKey;
-      Hmac = new HMACSHA1(secretKey);
+      Hmac = hashAlgorithm switch {
+          HashAlgorithm.Sha1 => new HMACSHA1(secretKey),
+          HashAlgorithm.Sha256 => new HMACSHA256(secretKey),
+          HashAlgorithm.Sha384 => new HMACSHA384(secretKey),
+          HashAlgorithm.Sha512 => new HMACSHA512(secretKey),
+          _ => throw new ArgumentOutOfRangeException(nameof(hashAlgorithm), hashAlgorithm, null),
+      };
     }
 
     protected byte[] GetSignatureBytes(byte[] buffer, int offset, int count)

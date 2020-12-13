@@ -2,8 +2,8 @@ namespace KDCryptoUtils.Signer
 {
   public class ByteSigner : BaseSigner<byte[]>
   {
-    public ByteSigner(string secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
-    public ByteSigner(byte[] secretKey, int signatureLength = -1) : base(secretKey, signatureLength) { }
+    public ByteSigner(string secretKey, int signatureLength = -1, HashAlgorithm hashAlgorithm = HashAlgorithm.Sha1) : base(secretKey, signatureLength, hashAlgorithm) { }
+    public ByteSigner(byte[] secretKey, int signatureLength = -1, HashAlgorithm hashAlgorithm = HashAlgorithm.Sha1) : base(secretKey, signatureLength, hashAlgorithm) { }
 
     protected override byte[] ConvertToBytes(byte[] value)
     {
