@@ -48,10 +48,16 @@ namespace KDCryptoUtils.Tests
       var s1 = new ByteSigner("key1");
 
       var data = new byte[] { 1, 2, 3 };
-      var signature = s1.GetSignatureString(data);
+      var signatureString = s1.GetSignatureString(data);
+      var signatureBytes = s1.GetSignatureBytes(data);
 
-      Assert.True(s1.IsSignatureValid(data, signature));
-      Assert.Null(Record.Exception(() => s1.ValidateSignature(data, signature)));
+      Assert.True(s1.IsSignatureValid(data, signatureString));
+      Assert.Null(Record.Exception(() => s1.ValidateSignature(data, signatureString)));
+      
+      Assert.True(s1.IsSignatureValid(data, signatureBytes));
+      Assert.True(s1.IsSignatureValid(data, 0, data.Length, signatureBytes, 0, signatureBytes.Length));
+      Assert.Null(Record.Exception(() => s1.ValidateSignature(data, signatureBytes)));
+      Assert.Null(Record.Exception(() => s1.ValidateSignature(data, signatureBytes, 0, signatureBytes.Length)));
     }
 
     [Fact]
@@ -60,11 +66,19 @@ namespace KDCryptoUtils.Tests
       var s1 = new ByteSigner("key1");
 
       var data = new byte[] { 1, 2, 3 };
-      var signature = s1.GetSignatureString(data);
-      signature = signature.Replace("D", "E");
+      var signatureString = s1.GetSignatureString(data);
+      signatureString = signatureString.Replace("D", "E");
+      
+      var signatureBytes = s1.GetSignatureBytes(data);
+      signatureBytes[2] = 1;
 
-      Assert.False(s1.IsSignatureValid(data, signature));
-      Assert.Throws<BadSignatureException>(() => s1.ValidateSignature(data, signature));
+      Assert.False(s1.IsSignatureValid(data, signatureString));
+      Assert.Throws<BadSignatureException>(() => s1.ValidateSignature(data, signatureString));
+
+      Assert.False(s1.IsSignatureValid(data, signatureBytes));
+      Assert.False(s1.IsSignatureValid(data, 0, data.Length, signatureBytes, 0, signatureBytes.Length));
+      Assert.Throws<BadSignatureException>(() => s1.ValidateSignature(data, signatureBytes));
+      Assert.Throws<BadSignatureException>(() => s1.ValidateSignature(data, signatureBytes, 0, signatureBytes.Length));
     }
 
     [Fact]
