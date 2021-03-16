@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace KDCryptoUtils
 {
   public static class CryptoUtils
@@ -13,6 +15,15 @@ namespace KDCryptoUtils
       for (int i = 0; i < aLength; i++)
         cmp |= a[aOffset + i] ^ b[bOffset + i];
       return cmp == 0;
+    }
+
+    public static byte[] GetCryptoRandomBytes(int length)
+    {
+      using var rng = RandomNumberGenerator.Create();
+
+      var bytes = new byte[length];
+      rng.GetBytes(bytes);
+      return bytes;
     }
   }
 }
