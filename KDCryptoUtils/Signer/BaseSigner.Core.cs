@@ -57,7 +57,7 @@ namespace KDCryptoUtils.Signer
 
     public T Decode(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      if (!ValidateInternal(signedString, encoding, out var valueBytes))
+      if (!TryDecodeSignedString(signedString, encoding, out var valueBytes))
         throw new BadSignatureException();
 
       return ConvertFromBytes(valueBytes);
@@ -87,7 +87,7 @@ namespace KDCryptoUtils.Signer
       }
     }
 
-    private bool ValidateInternal(string signedString, BinaryEncoding encoding, out byte[] valueBytes)
+    private bool TryDecodeSignedString(string signedString, BinaryEncoding encoding, out byte[] valueBytes)
     {
       if (!TryParseSignedString(signedString, encoding, out valueBytes, out var signatureBytes))
         return false;

@@ -43,7 +43,7 @@ namespace KDCryptoUtils.Signer
 
     public bool IsSignedStringValid(string signedString, BinaryEncoding encoding = BinaryEncoding.Base64)
     {
-      return ValidateInternal(signedString, encoding, out _);
+      return TryDecodeSignedString(signedString, encoding, out _);
     }
 
     public bool IsSignatureValid(T value, string signatureBase64) => IsSignatureValid(ConvertToBytes(value), Convert.FromBase64String(signatureBase64));
