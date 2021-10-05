@@ -10,7 +10,6 @@ namespace KDCryptoUtils.Signer
     private readonly int _signatureLength;
 
     private HMAC Hmac { get; }
-    private byte[] Key { get; }
 
     public BaseSigner(string key, int signatureLength = -1, HashAlgorithm hashAlgorithm = HashAlgorithm.Sha1)
         : this(Encoding.UTF8.GetBytes(key), signatureLength, hashAlgorithm) { }
@@ -19,7 +18,6 @@ namespace KDCryptoUtils.Signer
     {
       _signatureLength = signatureLength;
 
-      Key = key;
       Hmac = hashAlgorithm switch {
           HashAlgorithm.Sha1 => new HMACSHA1(key),
           HashAlgorithm.Sha256 => new HMACSHA256(key),
