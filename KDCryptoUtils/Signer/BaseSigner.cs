@@ -1,8 +1,10 @@
 using System;
+using JetBrains.Annotations;
 using KDLib;
 
 namespace KDCryptoUtils.Signer
 {
+  [PublicAPI]
   public abstract partial class BaseSigner<T>
   {
     public string GetSignatureString(T value) => Convert.ToBase64String(GetSignatureBytes(value));
