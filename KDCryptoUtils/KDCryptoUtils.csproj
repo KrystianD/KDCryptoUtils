@@ -5,7 +5,7 @@
     <Version>0.2.1.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="KDLib" Version="0.4.1" />
+    <PackageReference Include="KDLib" Version="0.4.4" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NLog" Version="4.5.3" />
   </ItemGroup>
